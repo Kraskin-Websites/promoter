@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Festival — Rave do Sul</title>
+
+    <meta property="og:title" content="Energy Festival — Rave do Sul">
+    <meta property="og:description" content="Garanta seu ingresso para o Energy Festival. A melhor rave do sul do país!">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== RESET & ANTI-OVERFLOW ===== */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+            width: 100%;
+            scroll-behavior: smooth;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            max-width: 100%;
+            font-family: 'Space Grotesk', Arial, sans-serif;
+        }
+        img, svg, video, canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        :root {
+            --neon-pink: #ff2bd6;
+            --neon-purple: #8b00ff;
+            --neon-cyan: #00e5ff;
+            --neon-yellow: #f5ff3d;
+            --dark-bg: #0a0014;
+            --card-bg: #150520;
+            --text: #f0eaff;
+            --text-dim: #b9a8d9;
+            --radius: 16px;
+            --shadow-neon: 0 0 25px rgba(255, 43, 214, 0.35);
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 0, 20, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 43, 214, 0.25);
+        }
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.9rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.55rem 1.2rem;
+            border-radius: 50px;
+            border: 1.5px solid var(--neon-cyan);
+            transition: all 0.3s ease;
+        }
+        .nav-back:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+        }
+
+        /* ===== HERO DO EVENTO ===== */
+        .event-hero {
+            margin-top: 62px;
+            position: relative;
+            padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 4vw, 2rem);
+            text-align: center;
+            background:
+                radial-gradient(circle at 25% 40%, rgba(255, 43, 214, 0.35) 0%, transparent 50%),
+                radial-gradient(circle at 75% 60%, rgba(0, 229, 255, 0.3) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0014 0%, #140226 100%);
+            overflow: hidden;
+        }
+        .event-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('./moving2024.webp') center/cover no-repeat;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        .event-hero .badge {
+            display: inline-block;
+            background: rgba(255, 43, 214, 0.15);
+            border: 1px solid rgba(255, 43, 214, 0.5);
+            border-radius: 50px;
+            padding: 0.35rem 1.1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--neon-pink);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .event-hero h1 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(2.4rem, 7vw, 4.5rem);
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow), var(--neon-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            margin-bottom: 0.6rem;
+        }
+        .event-hero .tagline {
+            color: var(--text-dim);
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            position: relative;
+        }
+
+        /* ===== CONTAINER GERAL ===== */
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: clamp(2rem, 5vw, 3.5rem) 1.2rem 4rem;
+        }
+
+        /* ===== INFO CARDS (data, local, horário, valor) ===== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+            list-style: none;
+        }
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 43, 214, 0.2);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.2rem;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 43, 214, 0.6);
+        }
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 43, 214, 0.12);
+            border-radius: 12px;
+        }
+        .info-icon svg { width: 26px; height: 26px; fill: var(--neon-pink); }
+        .info-card .label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.3rem;
+        }
+        .info-card .value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .info-card.destaque .value {
+            font-size: 1.6rem;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 12px rgba(245, 255, 61, 0.5);
+        }
+        .info-card.destaque {
+            border-color: rgba(245, 255, 61, 0.4);
+            background: linear-gradient(135deg, #150520 0%, #1f0a33 100%);
+        }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(1.7rem, 4vw, 2.5rem);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        /* ===== LINE UP ===== */
+        .lineup {
+            margin-bottom: 3.5rem;
+        }
+        .lineup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+            list-style: none;
+        }
+        .dj-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: var(--radius);
+            padding: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .dj-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 229, 255, 0.6);
+        }
+        .dj-card.headliner {
+            grid-column: 1 / -1;
+            border-color: rgba(255, 43, 214, 0.5);
+            background: linear-gradient(135deg, #150520 0%, #240838 100%);
+        }
+        .dj-avatar {
+            flex-shrink: 0;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.3rem;
+            color: #fff;
+            text-shadow: 0 0 8px rgba(255, 43, 214, 0.8);
+        }
+        .dj-card.headliner .dj-avatar {
+            width: 80px;
+            height: 80px;
+            font-size: 1.6rem;
+        }
+        .dj-info .dj-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+        }
+        .dj-info .dj-time {
+            font-size: 0.85rem;
+            color: var(--neon-cyan);
+            font-weight: 600;
+        }
+        .dj-card.headliner .dj-tag {
+            display: inline-block;
+            background: var(--neon-pink);
+            color: #000;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.2rem 0.7rem;
+            border-radius: 50px;
+            margin-bottom: 0.4rem;
+        }
+
+        /* ===== CTA COMPRA ===== */
+        .buy-cta {
+            text-align: center;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(139, 0, 255, 0.3) 0%, transparent 65%);
+            background-color: #100222;
+            border: 1px solid rgba(255, 43, 214, 0.3);
+            border-radius: 24px;
+            padding: clamp(2rem, 5vw, 3rem) 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .buy-cta .price-again {
+            font-family: 'Permanent Marker', cursive;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            color: var(--neon-yellow);
+            text-shadow: 0 0 15px rgba(245, 255, 61, 0.5);
+            margin-bottom: 0.4rem;
+        }
+        .buy-cta p {
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+        .btn-buy {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 1.1rem 3rem;
+            border-radius: 50px;
+            box-shadow: 0 0 35px rgba(255, 43, 214, 0.45);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: pulseBtn 2.2s ease-in-out infinite;
+        }
+        .btn-buy:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 0 55px rgba(255, 43, 214, 0.7);
+        }
+        @keyframes pulseBtn {
+            0%, 100% { box-shadow: 0 0 35px rgba(255, 43, 214, 0.45); }
+            50% { box-shadow: 0 0 55px rgba(255, 43, 214, 0.75); }
+        }
+        .buy-notice {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #050009;
+            border-top: 1px solid rgba(255, 43, 214, 0.2);
+            text-align: center;
+            padding: 1.5rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        footer .brand {
+            font-size: 1.1rem;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 520px) {
+            .info-grid { grid-template-columns: repeat(2, 1fr); }
+            .dj-card { padding: 1.2rem; }
+            .dj-avatar { width: 52px; height: 52px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="brand">Rave do Sul</a>
+            <a href="index.html" class="nav-back">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                Voltar
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===== HERO DO EVENTO ===== -->
+    <header class="event-hero">
+        <span class="badge">⚡ Festival de Música Eletrônica</span>
+        <h1>Energy Festival</h1>
+        <p class="tagline">A noite mais eletrizante do sul do Brasil te espera!</p>
+    </header>
+
+    <main class="content">
+
+        <!-- ===== INFORMAÇÕES DO EVENTO ===== -->
+        <ul class="info-grid">
+            <li class="info-card">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+                </div>
+                <p class="label">Data</p>
+                <p class="value">15 de Março de 2026</p>
+            </li>
+            <li class="info-card">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <p class="label">Local</p>
+                <p class="value">Galpão Central — Porto Alegre/RS</p>
+            </li>
+            <li class="info-card">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                </div>
+                <p class="label">Horário</p>
+                <p class="value">Abertura 21h — até 5h</p>
+            </li>
+            <li class="info-card destaque">
+                <div class="info-icon">
+                    <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                </div>
+                <p class="label">Ingresso</p>
+                <p class="value">R$ 89,90</p>
+            </li>
+        </ul>
+
+        <!-- ===== LINE UP ===== -->
+        <section class="lineup">
+            <h2 class="section-title">Line Up</h2>
+            <p class="section-subtitle">Os DJs que vão comandar a pista</p>
+            <ul class="lineup-grid">
+
+                <li class="dj-card headliner">
+                    <div class="dj-avatar">DJ</div>
+                    <div class="dj-info">
+                        <span class="dj-tag">Headliner</span>
+                        <h3 class="dj-name">DJ Vortex</h3>
+                        <p class="dj-time">Set principal — 23h30</p>
+                    </div>
+                </li>
+
+                <li class="dj-card">
+                    <div class="dj-avatar">LS</div>
+                    <div class="dj-info">
+                        <h3 class="dj-name">Luna Silva</h3>
+                        <p class="dj-time">21h30 — Aquecimento</p>
+                    </div>
+                </li>
+
+                <li class="dj-card">
+                    <div class="dj-avatar">KB</div>
+                    <div class="dj-info">
+                        <h3 class="dj-name">Kaique Bass</h3>
+                        <p class="dj-time">22h30 — Tech House</p>
+                    </div>
+                </li>
+
+                <li class="dj-card">
+                    <div class="dj-avatar">MZ</div>
+                    <div class="dj-info">
+                        <h3 class="dj-name">Maya Zen</h3>
+                        <p class="dj-time">01h00 — Melodic Techno</p>
+                    </div>
+                </li>
+
+                <li class="dj-card">
+                    <div class="dj-avatar">RG</div>
+                    <div class="dj-info">
+                        <h3 class="dj-name">Rafael Groove</h3>
+                        <p class="dj-time">02h30 — Bassline</p>
+                    </div>
+                </li>
+
+            </ul>
+        </section>
+
+        <!-- ===== CTA DE COMPRA ===== -->
+        <section class="buy-cta">
+            <p class="price-again">R$ 89,90</p>
+            <p>Garanta seu ingresso e entre na história dessa noite!</p>
+            <a href="https://link-do-ingresso.com/energy-festival" class="btn-buy" target="_blank" rel="noopener">
+                Comprar Ingresso Agora
+            </a>
+            <p class="buy-notice">🔒 Pagamento seguro · Ingresso digital enviado por e-mail</p>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>&copy; 2026 <span class="brand">Rave do Sul</span> — Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        // ===== Scroll suave =====
+        document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ===== Animação de entrada dos cards ao rolar =====
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.info-card, .dj-card, .buy-cta').forEach(function (el) {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
